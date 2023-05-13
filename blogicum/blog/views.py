@@ -54,13 +54,13 @@ def index(request):
 
 def post_detail(request, id):
     template = 'blog/detail.html'
-    if id not in [post[id_post]
-                  for post in posts
-                  for id_post in post
-                  if id_post == 'id']:
+    try:
+        context = {
+            'post': posts[id]
+        }
+        return render(request, template, context)
+    except LookupError:
         raise Http404('такого поста нет')
-    context = {'post': posts[id]}
-    return render(request, template, context)
 
 
 def category_posts(request, category_slug):
